@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const formData = require("form-data");
 const Mailgun = require("mailgun.js");
+const { log } = require("console");
 require("dotenv").config();
 
 const app = express();
@@ -10,7 +11,7 @@ app.use(cors());
 
 const mailgun = new Mailgun(formData);
 const client = mailgun.client({
-  username: "Paul Bouzian",
+  username: process.env.MAILGUN_USERNAME /* VOTRE NOM D'UTILISATEUR */,
   key: process.env.MAILGUN_API_KEY /* VOTRE CLÉ API */,
 });
 
@@ -30,7 +31,7 @@ app.post("/form", async (req, res) => {
     };
 
     const response = await client.messages.create(
-      process.env.MAILGUN_DOMAIN,
+      process.env.MAILGUN_SANDBOX,
       messageData
     );
 
